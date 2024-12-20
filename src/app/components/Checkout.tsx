@@ -1,3 +1,4 @@
+'use client';
 import { useCartStore } from "@/store";
 import { useEffect } from "react";
 
@@ -22,7 +23,9 @@ export default function Checkout() {
                     throw new Error('Falha no pagamento');
                 }
     
-                // const data = await response.json();
+                const data = await response.json();
+                console.log('Payment intent:', data.paymentIntentId);
+
             } catch (error) {
                 console.error('Error creating payment intent:', error);
             }

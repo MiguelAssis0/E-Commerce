@@ -33,9 +33,9 @@ async function handler(req: Request) {
     const payload = await req.json();
     const headersList = headers() as unknown as IncomingHttpHeaders;
     const heads = {
-        'svix-id': headersList.get("svix-id"),
-        'svix-timestamp': headersList.get("svix-timestamp"),
-        'svix-signature': headersList.get("svix-signature")
+        'svix-id': headersList["svix-id"],
+        'svix-timestamp': headersList["svix-timestamp"],
+        'svix-signature': headersList["svix-signature"],
     };
     const wh = new Webhook(webHookSecret);
     let evt: Event | null = null;
