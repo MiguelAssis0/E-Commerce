@@ -1,7 +1,39 @@
+import { useCartStore } from "@/store";
+import { useEffect } from "react";
+
 export default function Checkout() {
+    const cartStore = useCartStore();
+
+    useEffect(() => {
+        const createPaymentIntent = async () => {
+            try {
+                const response = await fetch('/api/create-payment-intent', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        items: cartStore.cart,
+                        payment_intent_id: cartStore.paymentIntentId,
+                    }),
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Falha no pagamento');
+                }
+    
+                // const data = await response.json();
+            } catch (error) {
+                console.error('Error creating payment intent:', error);
+            }
+        };
+    
+        createPaymentIntent();
+    }, [cartStore.cart, cartStore.paymentIntentId]);
+
     return (
-        <div>
-            <h1>Checkout</h1>
-        </div>
+        <>
+            
+        </>
     );
 }
