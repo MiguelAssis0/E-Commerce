@@ -1,11 +1,11 @@
 import { formatPrice } from "@/lib/utils";
 import { useCartStore } from "@/store";
 import Image from "next/image";
+import CheckoutButton from "./CheckoutButton";
 
 export default function CartDrawer() {
     const useCart = useCartStore();
-
-
+    
     return(
         <>
             {
@@ -42,6 +42,10 @@ export default function CartDrawer() {
                                     </div>
                                 ))
                             }
+                            
+                           <CheckoutButton/>
+                           
+                            
                         </div>
                     </div>
                 )
