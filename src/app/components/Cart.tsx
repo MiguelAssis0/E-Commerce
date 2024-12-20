@@ -23,13 +23,13 @@ export default function Cart() {
                         onClick={() => useCart.toggleCart()}
                     >
                         <div 
-                            className="absolute bg-slate-600 right-0 top-0 h-full w-1/3 p-12 overflow-y-scroll"
+                            className="absolute bg-slate-600 right-0 top-0 h-full w-1/3 p-12 overflow-y-scroll max-md:w-2/3 max-md:p-5"
                             onClick={(e)=> e.stopPropagation()}    
                         >
                             <h1>Meu Carrinho</h1>
                             {
                                 useCart.cart.map((product) => (
-                                    <div className="flex justify-between border rounded-lg my-2 p-2" key={product.id}>
+                                    <div className="flex justify-between border rounded-lg my-2 p-2 max-md:flex-col max-md:items-center max-md:text-center max-md:gap-2" key={product.id}>
                                         <div className="gap-2">
                                             <p>{product.name}</p>
                                             <p>{formatPrice(product.price)}</p>

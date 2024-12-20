@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ptBR } from '@clerk/localizations'
+import Hydrate from "./components/Hydrate";
 
 export const metadata: Metadata = {
   title: "Next E-Commerce",
@@ -22,10 +23,12 @@ export default function RootLayout({
     <ClerkProvider localization={ptBR}>
       <html lang="en">
         <body className={clsx(inter.className, "bg-slate-700")}>
+          <Hydrate>
           <Navbar />
-          <main className="h-screen p-16">
-            {children}
-          </main>
+            <main className="h-screen p-16">
+              {children}
+            </main>
+          </Hydrate> 
         </body>
       </html>
     </ClerkProvider>

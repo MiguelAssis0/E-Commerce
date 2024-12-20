@@ -23,7 +23,7 @@ export default function ProductImage({ product, fill }: ProductProps): JSX.Eleme
         <Image 
             src={product.image}
             width={400}
-            height={700}
+            height={900}
             alt={product.name}
             className={`object-cover ${loading ? "grayscale blur-2xl scale-110" : "grayscale-0 blur-0 scale-100"}`}
             onLoadingComplete={() => setLoading(false)}
