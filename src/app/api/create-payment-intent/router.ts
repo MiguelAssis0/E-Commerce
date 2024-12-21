@@ -2,6 +2,7 @@ import { stripe } from "@/lib/stripe";
 import { ProductType } from "@/types/ProductType";
 import { auth } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
+import { NextResponse } from "next/server";
 
 const calculateOrderAmount = (items: ProductType[]) => {
     const totalPrice = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
@@ -15,10 +16,10 @@ export async function POST(req: Request) {
     if (!userId) 
         return new Response("Transação não autorizada", { status: 401 });
     
-    const customerId = await stripe.customers.create({
-        email: userId,
-        name: userId,
-    });
+    // const customerId = await stripe.customers.create({
+    //     email: userId,
+    //     name: userId,
+    // });
 
     const total = calculateOrderAmount(items);
 
@@ -46,7 +47,7 @@ export async function POST(req: Request) {
                 amount: calculateOrderAmount(items),
             })
 
-            const [existingOrder, updatedOrder] =  await Promise.all([
+            const [existingOrder] =  await Promise.all([
                 prisma.order.findFirest({
                     where:{
                         paymentIntentId: payment_intent_id
@@ -76,10 +77,10 @@ export async function POST(req: Request) {
             ]);
 
             if(!existingOrder){
-                return new Response("Order not found", { status: 404 });
+                return new NextResponse("Order not found", { status: 404 });
             }
 
-            return Response.json({ paymentIntent: updatedIntent }, { status: 200 });
+            return NextResponse.json({ paymentIntent: updatedIntent }, { status: 200 });
         }
     }else{
         const paymentIntent = await stripe.paymentIntents.create({
@@ -92,11 +93,13 @@ export async function POST(req: Request) {
 
         order.paymentIntentID = paymentIntent.id
 
-        const newOrder = await prisma.order.create({ 
-            data: order 
-        });
+        // const newOrder = await prisma.order.create({ 
+        //     data: order 
+        // });
+
+        
     
-        return Response.json({ paymentIntent }, { status: 200 });
+        return NextResponse.json({ paymentIntent }, { status: 200 });
     }
 
 }

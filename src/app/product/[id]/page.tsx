@@ -2,23 +2,15 @@ import AddCart from "@/app/components/AddCart"
 import ProductImage from "@/app/components/ProductImage"
 import { formatPrice } from "@/lib/utils"
 import Stripe from "stripe"
-import { Metadata } from "next"
-
-interface Product {
-    id: string;
-    name: string;
-    price: number | null;
-    image: string;
-    description: string | null;
-    currency: string;
-}
+import { ProductType } from "@/types/ProductType"
+import { Metadata } from "@stripe/stripe-js"
 
 type PageProps = {
     params: Promise<{ id: string }>;
     searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-async function getProduct(id: string): Promise<Product> {
+async function getProduct(id: string): Promise<ProductType> {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {apiVersion: "2024-12-18.acacia"})
     const produto = await stripe.products.retrieve(id)
     const price = await stripe.prices.retrieve(produto.default_price as string)
@@ -39,7 +31,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     
     return {
         title: product.name,
-        description: product.description,
+        description: product.description ?? '', 
     }
 }
 
